@@ -1,0 +1,139 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/profile"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Configuración</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Apariencia -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="moon"></ion-icon> Apariencia
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-icon slot="start" name="moon"></ion-icon>
+          <ion-label>Modo Oscuro</ion-label>
+          <ion-toggle
+            [checked]="settings.darkMode"
+            (ionChange)="onDarkModeChange($event)"
+            data-testid="dark-mode-toggle">
+          </ion-toggle>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Sonido -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="volume-high"></ion-icon> Sonido
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-icon slot="start" name="volume-high"></ion-icon>
+          <ion-label>Efectos de Sonido</ion-label>
+          <ion-toggle
+            [checked]="settings.soundEnabled"
+            (ionChange)="onSoundChange($event)"
+            data-testid="sound-toggle">
+          </ion-toggle>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Quiz -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="help"></ion-icon> Quiz
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-icon slot="start" name="speedometer"></ion-icon>
+          <ion-label>Dificultad por defecto</ion-label>
+          <ion-select
+            [value]="settings.defaultDifficulty"
+            (ionChange)="onDifficultyChange($event)"
+            interface="popover"
+            data-testid="difficulty-select">
+            <ion-select-option value="any">Cualquiera</ion-select-option>
+            <ion-select-option value="easy">Fácil</ion-select-option>
+            <ion-select-option value="medium">Media</ion-select-option>
+            <ion-select-option value="hard">Difícil</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon slot="start" name="help"></ion-icon>
+          <ion-label position="stacked">Número de preguntas</ion-label>
+          <ion-range
+            [min]="5"
+            [max]="20"
+            [step]="5"
+            [pin]="true"
+            [value]="settings.defaultQuestionCount"
+            (ionChange)="onQuestionCountChange($event)"
+            data-testid="question-count-range">
+          </ion-range>
+          <ion-note slot="end">{{ settings.defaultQuestionCount }}</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Perfil -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="person"></ion-icon> Perfil
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-icon slot="start" name="person"></ion-icon>
+          <ion-input
+            label="Nombre de usuario"
+            labelPlacement="floating"
+            [value]="settings.username"
+            (ionBlur)="onUsernameChange($event)"
+            data-testid="username-input">
+          </ion-input>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Acciones -->
+  <ion-button
+    expand="block"
+    color="warning"
+    (click)="resetSettings()"
+    class="ion-margin-top"
+    data-testid="reset-button">
+    <ion-icon slot="start" name="refresh-circle"></ion-icon>
+    Restablecer Configuración
+  </ion-button>
+
+  <ion-button
+    expand="block"
+    (click)="goBack()"
+    class="ion-margin-top"
+    data-testid="back-button">
+    <ion-icon slot="start" name="arrow-back"></ion-icon>
+    Volver al Perfil
+  </ion-button>
+</ion-content>

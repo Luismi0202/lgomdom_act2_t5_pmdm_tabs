@@ -1,0 +1,104 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>📊 Estadísticas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar color="primary">
+      <ion-title size="large">📊 Estadísticas</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="ion-padding">
+    <!-- Resumen de estadísticas -->
+    <ion-card class="stats-summary" *ngIf="stats">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="trophy"></ion-icon> Tu Rendimiento
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6">
+              <div class="stat-box">
+                <ion-icon name="stats-chart" color="primary"></ion-icon>
+                <span class="stat-value">{{ stats.totalQuizzes }}</span>
+                <span class="stat-label">Quizzes</span>
+              </div>
+            </ion-col>
+            <ion-col size="6">
+              <div class="stat-box">
+                <ion-icon name="checkmark-circle" color="success"></ion-icon>
+                <span class="stat-value">{{ stats.averageScore | number:'1.0-0' }}%</span>
+                <span class="stat-label">Promedio</span>
+              </div>
+            </ion-col>
+            <ion-col size="6">
+              <div class="stat-box">
+                <ion-icon name="flame" color="danger"></ion-icon>
+                <span class="stat-value">{{ stats.bestScore }}%</span>
+                <span class="stat-label">Mejor</span>
+              </div>
+            </ion-col>
+            <ion-col size="6">
+              <div class="stat-box">
+                <ion-icon name="star" color="warning"></ion-icon>
+                <span class="stat-value">{{ stats.totalCorrect }}/{{ stats.totalQuestions }}</span>
+                <span class="stat-label">Correctas</span>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Historial reciente -->
+    <div class="section-header">
+      <h2><ion-icon name="time"></ion-icon> Historial Reciente</h2>
+      <ion-button
+        *ngIf="recentResults.length > 0"
+        fill="clear"
+        color="danger"
+        size="small"
+        (click)="clearAllStats()"
+        data-testid="clear-stats-btn">
+        <ion-icon slot="start" name="trash"></ion-icon>
+        Limpiar
+      </ion-button>
+    </div>
+
+    <ion-list *ngIf="recentResults.length > 0">
+      <ion-item
+        *ngFor="let result of recentResults"
+        button
+        (click)="viewResultDetail(result)"
+        data-testid="result-item">
+        <ion-label>
+          <h3>{{ result.category }}</h3>
+          <p>
+            <ion-chip [color]="getDifficultyColor(result.difficulty)" size="small">
+              {{ result.difficulty | titlecase }}
+            </ion-chip>
+            <span class="date-text">{{ formatDate(result.date) }}</span>
+          </p>
+        </ion-label>
+        <ion-badge slot="end" [color]="getScoreColor(result.score)">
+          {{ result.score }}%
+        </ion-badge>
+        <ion-icon slot="end" name="chevron-forward" color="medium"></ion-icon>
+      </ion-item>
+    </ion-list>
+
+    <!-- Estado vacío -->
+    <ion-card *ngIf="recentResults.length === 0" class="empty-state">
+      <ion-card-content class="ion-text-center">
+        <ion-icon name="stats-chart" size="large" color="medium"></ion-icon>
+        <h2>Sin estadísticas</h2>
+        <p>Completa algunos quizzes para ver tus estadísticas aquí.</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

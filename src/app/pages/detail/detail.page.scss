@@ -1,0 +1,97 @@
+.result-summary {
+  .score-display {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .score-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 24px;
+
+      &.success {
+        background: linear-gradient(135deg, #2dd36f 0%, #28ba62 100%);
+        color: white;
+      }
+
+      &.warning {
+        background: linear-gradient(135deg, #ffc409 0%, #e0a800 100%);
+        color: white;
+      }
+
+      &.danger {
+        background: linear-gradient(135deg, #eb445a 0%, #cf3c4f 100%);
+        color: white;
+      }
+
+      &.medium {
+        background: linear-gradient(135deg, #92949c 0%, #7a7c83 100%);
+        color: white;
+      }
+    }
+
+    .score-details {
+      p {
+        margin: 5px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        ion-icon {
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}
+
+ion-item {
+  --padding-start: 0;
+  margin-bottom: 10px;
+
+  &.correct {
+    --background: rgba(45, 211, 111, 0.1);
+  }
+
+  &.incorrect {
+    --background: rgba(235, 68, 90, 0.1);
+  }
+
+  h3 {
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .user-answer {
+    color: var(--ion-color-danger);
+    font-size: 14px;
+  }
+
+  .correct-answer {
+    color: var(--ion-color-success);
+    font-size: 14px;
+
+    &.highlight {
+      background: rgba(45, 211, 111, 0.2);
+      padding: 4px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-top: 4px;
+    }
+  }
+}
+
+ion-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  ion-icon {
+    font-size: 24px;
+  }
+}

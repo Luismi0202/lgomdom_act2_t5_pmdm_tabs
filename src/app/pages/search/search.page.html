@@ -1,0 +1,183 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>{{ view === 'setup' ? '🔍 Buscar Quiz' : view === 'quiz' ? '📝 Quiz' : '🏆 Resultado' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- VISTA DE CONFIGURACIÓN -->
+  <div *ngIf="view === 'setup'" class="setup-view ion-padding">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Configura tu Quiz</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-select
+              label="Categoría"
+              labelPlacement="floating"
+              [(ngModel)]="selectedCategory"
+              interface="action-sheet"
+              placeholder="Cualquier categoría"
+              data-testid="category-select">
+              <ion-select-option [value]="null">Cualquier categoría</ion-select-option>
+              <ion-select-option *ngFor="let cat of categories" [value]="cat.id">
+                {{ cat.name }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-select
+              label="Dificultad"
+              labelPlacement="floating"
+              [(ngModel)]="selectedDifficulty"
+              interface="action-sheet"
+              data-testid="difficulty-select">
+              <ion-select-option value="any">Cualquiera</ion-select-option>
+              <ion-select-option value="easy">Fácil</ion-select-option>
+              <ion-select-option value="medium">Media</ion-select-option>
+              <ion-select-option value="hard">Difícil</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-select
+              label="Número de preguntas"
+              labelPlacement="floating"
+              [(ngModel)]="questionCount"
+              interface="action-sheet"
+              data-testid="count-select">
+              <ion-select-option [value]="5">5 preguntas</ion-select-option>
+              <ion-select-option [value]="10">10 preguntas</ion-select-option>
+              <ion-select-option [value]="15">15 preguntas</ion-select-option>
+              <ion-select-option [value]="20">20 preguntas</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+
+        <ion-button
+          expand="block"
+          (click)="startQuiz()"
+          [disabled]="isLoadingQuestions"
+          class="ion-margin-top"
+          data-testid="start-quiz-btn">
+          <ion-spinner *ngIf="isLoadingQuestions" name="crescent"></ion-spinner>
+          <ion-icon *ngIf="!isLoadingQuestions" slot="start" name="play"></ion-icon>
+          {{ isLoadingQuestions ? 'Cargando...' : 'Comenzar Quiz' }}
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <div *ngIf="isLoading" class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando categorías...</p>
+    </div>
+  </div>
+
+  <!-- VISTA DE QUIZ -->
+  <div *ngIf="view === 'quiz' && currentQuestion" class="quiz-view ion-padding">
+    <div class="progress-section">
+      <div class="progress-text">
+        Pregunta {{ getProgress().current }} de {{ getProgress().total }}
+      </div>
+      <ion-progress-bar [value]="getProgress().percentage / 100"></ion-progress-bar>
+    </div>
+
+    <ion-card class="question-card">
+      <ion-card-header>
+        <div class="question-meta">
+          <ion-chip [color]="currentQuestion.difficulty === 'easy' ? 'success' : currentQuestion.difficulty === 'medium' ? 'warning' : 'danger'">
+            {{ currentQuestion.difficulty | titlecase }}
+          </ion-chip>
+          <ion-button fill="clear" size="small" (click)="toggleFavorite(currentQuestion)" data-testid="favorite-btn">
+            <ion-icon [name]="isFavorite(currentQuestion) ? 'star' : 'star-outline'" color="warning"></ion-icon>
+          </ion-button>
+        </div>
+        <ion-card-title class="question-text">{{ currentQuestion.question }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-radio-group [(ngModel)]="selectedAnswer" (ionChange)="selectAnswer($event.detail.value)">
+          <ion-list>
+            <ion-item
+              *ngFor="let answer of currentQuestion.allAnswers; let i = index"
+              [class.selected]="isAnswerSelected(answer)"
+              button
+              (click)="selectAnswer(answer)"
+              [attr.data-testid]="'answer-' + i">
+              <ion-radio slot="start" [value]="answer"></ion-radio>
+              <ion-label class="ion-text-wrap">{{ answer }}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-radio-group>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-button
+            expand="block"
+            fill="outline"
+            [disabled]="getProgress().current === 1"
+            (click)="previousQuestion()"
+            data-testid="prev-btn">
+            <ion-icon slot="start" name="arrow-back"></ion-icon>
+            Anterior
+          </ion-button>
+        </ion-col>
+        <ion-col *ngIf="getProgress().current < getProgress().total">
+          <ion-button
+            expand="block"
+            (click)="nextQuestion()"
+            data-testid="next-btn">
+            Siguiente
+            <ion-icon slot="end" name="arrow-forward"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col *ngIf="getProgress().current === getProgress().total">
+          <ion-button
+            expand="block"
+            color="success"
+            (click)="finishQuiz()"
+            [disabled]="!canFinish()"
+            data-testid="finish-btn">
+            Finalizar
+            <ion-icon slot="end" name="checkmark-circle"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <!-- VISTA DE RESULTADO -->
+  <div *ngIf="view === 'result' && quizResult" class="result-view ion-padding">
+    <ion-card class="result-card">
+      <ion-card-content>
+        <div class="result-icon">
+          <ion-icon name="trophy" [color]="getScoreColor()"></ion-icon>
+        </div>
+        <h1 class="result-score" [class]="getScoreColor()">{{ quizResult.score }}%</h1>
+        <p class="result-text">
+          {{ quizResult.correctAnswers }} de {{ quizResult.totalQuestions }} correctas
+        </p>
+        <div class="result-message">
+          <p *ngIf="quizResult.score >= 80">¡Excelente! Eres un experto 🎉</p>
+          <p *ngIf="quizResult.score >= 50 && quizResult.score < 80">¡Bien hecho! Sigue practicando 👍</p>
+          <p *ngIf="quizResult.score < 50">¡No te rindas! Practica más 💪</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button expand="block" (click)="viewResultDetail()" data-testid="view-detail-btn">
+      Ver Detalles
+      <ion-icon slot="end" name="arrow-forward"></ion-icon>
+    </ion-button>
+
+    <ion-button expand="block" fill="outline" (click)="resetQuiz()" class="ion-margin-top" data-testid="play-again-btn">
+      <ion-icon slot="start" name="refresh"></ion-icon>
+      Jugar de Nuevo
+    </ion-button>
+  </div>
+</ion-content>

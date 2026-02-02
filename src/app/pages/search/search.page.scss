@@ -1,0 +1,129 @@
+.setup-view {
+  ion-card {
+    border-radius: 16px;
+  }
+
+  ion-card-title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+
+  ion-spinner {
+    --color: var(--ion-color-primary);
+    width: 48px;
+    height: 48px;
+  }
+
+  p {
+    margin-top: 12px;
+    color: var(--ion-color-medium);
+  }
+}
+
+.quiz-view {
+  .progress-section {
+    margin-bottom: 16px;
+
+    .progress-text {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    ion-progress-bar {
+      --background: var(--ion-color-light);
+      --progress-background: var(--ion-color-primary);
+      height: 8px;
+      border-radius: 4px;
+    }
+  }
+
+  .question-card {
+    border-radius: 16px;
+    margin-bottom: 16px;
+
+    .question-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .question-text {
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
+    ion-item {
+      --padding-start: 8px;
+      --border-radius: 8px;
+      margin-bottom: 8px;
+      border: 2px solid var(--ion-color-light);
+      border-radius: 8px;
+      transition: all 0.2s ease;
+
+      &.selected {
+        border-color: var(--ion-color-primary);
+        background: rgba(var(--ion-color-primary-rgb), 0.1);
+      }
+
+      ion-label {
+        padding: 12px 0;
+      }
+    }
+  }
+}
+
+.result-view {
+  .result-card {
+    border-radius: 16px;
+    text-align: center;
+    padding: 20px 0;
+
+    .result-icon {
+      ion-icon {
+        font-size: 80px;
+      }
+    }
+
+    .result-score {
+      font-size: 64px;
+      font-weight: bold;
+      margin: 16px 0;
+
+      &.success {
+        color: var(--ion-color-success);
+      }
+
+      &.warning {
+        color: var(--ion-color-warning);
+      }
+
+      &.danger {
+        color: var(--ion-color-danger);
+      }
+    }
+
+    .result-text {
+      font-size: 18px;
+      color: var(--ion-color-medium);
+    }
+
+    .result-message {
+      margin-top: 16px;
+      font-size: 16px;
+
+      p {
+        margin: 0;
+      }
+    }
+  }
+}

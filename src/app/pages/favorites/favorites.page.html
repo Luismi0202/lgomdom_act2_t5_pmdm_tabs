@@ -1,0 +1,67 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>⭐ Favoritos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar color="primary">
+      <ion-title size="large">⭐ Favoritos</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="ion-padding">
+    <!-- Botón para limpiar todos -->
+    <div *ngIf="favorites.length > 0" class="header-actions">
+      <ion-badge color="primary">{{ favorites.length }} guardadas</ion-badge>
+      <ion-button
+        fill="clear"
+        color="danger"
+        size="small"
+        (click)="clearAllFavorites()"
+        data-testid="clear-all-btn">
+        <ion-icon slot="start" name="trash-bin"></ion-icon>
+        Limpiar todo
+      </ion-button>
+    </div>
+
+    <!-- Lista de favoritos -->
+    <ion-list *ngIf="favorites.length > 0">
+      <ion-item-sliding *ngFor="let question of favorites">
+        <ion-item data-testid="favorite-item">
+          <ion-icon slot="start" name="star" color="warning"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <h3>{{ question.question }}</h3>
+            <p>
+              <ion-chip [color]="getDifficultyColor(question.difficulty)" size="small">
+                {{ question.difficulty | titlecase }}
+              </ion-chip>
+              <span class="category-text">{{ question.category }}</span>
+            </p>
+            <p class="answer-text">
+              <strong>Respuesta:</strong> {{ question.correctAnswer }}
+            </p>
+          </ion-label>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option
+            color="danger"
+            (click)="removeFavorite(question)"
+            data-testid="remove-btn">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+
+    <!-- Estado vacío -->
+    <ion-card *ngIf="favorites.length === 0" class="empty-state">
+      <ion-card-content class="ion-text-center">
+        <ion-icon name="heart" size="large" color="medium"></ion-icon>
+        <h2>No tienes favoritos</h2>
+        <p>Guarda tus preguntas favoritas durante un quiz tocando el icono de estrella.</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

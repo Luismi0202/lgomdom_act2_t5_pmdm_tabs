@@ -1,0 +1,86 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>👤 Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar color="primary">
+      <ion-title size="large">👤 Perfil</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="ion-padding">
+    <!-- Tarjeta de perfil -->
+    <ion-card class="profile-card">
+      <ion-card-content>
+        <div class="profile-header">
+          <ion-avatar class="profile-avatar">
+            <div class="avatar-placeholder">
+              <ion-icon name="person"></ion-icon>
+            </div>
+          </ion-avatar>
+          <div class="profile-info">
+            <h2>{{ settings?.username || 'Jugador' }}</h2>
+            <ion-chip [color]="getLevelColor()">
+              <ion-icon name="trophy"></ion-icon>
+              {{ getLevel() }}
+            </ion-chip>
+          </div>
+        </div>
+
+        <div class="profile-stats" *ngIf="stats">
+          <div class="stat-item">
+            <span class="stat-value">{{ stats.totalQuizzes }}</span>
+            <span class="stat-label">Quizzes</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">{{ stats.averageScore | number:'1.0-0' }}%</span>
+            <span class="stat-label">Promedio</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">{{ stats.bestScore }}%</span>
+            <span class="stat-label">Mejor</span>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Opciones de menú -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Opciones</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item button (click)="goToSettings()" data-testid="settings-btn">
+            <ion-icon slot="start" name="settings" color="primary"></ion-icon>
+            <ion-label>Configuración</ion-label>
+            <ion-icon slot="end" name="chevron-forward" color="medium"></ion-icon>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon slot="start" [name]="settings?.darkMode ? 'moon' : 'sunny'" color="primary"></ion-icon>
+            <ion-label>Tema</ion-label>
+            <ion-chip slot="end" [color]="settings?.darkMode ? 'dark' : 'warning'">
+              {{ settings?.darkMode ? 'Oscuro' : 'Claro' }}
+            </ion-chip>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Información de la app -->
+    <ion-card class="info-card">
+      <ion-card-content>
+        <ion-icon name="information-circle" color="primary"></ion-icon>
+        <div>
+          <h3>Trivia Master</h3>
+          <p>Versión 1.0.0</p>
+          <p class="app-description">Una aplicación de trivia para poner a prueba tus conocimientos.</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

@@ -1,0 +1,12 @@
+{
+  "trivia_categories": [
+    { "id": 9, "name": "General Knowledge" },
+    { "id": 10, "name": "Entertainment: Books" },
+    { "id": 11, "name": "Entertainment: Film" },
+    { "id": 12, "name": "Entertainment: Music" },
+    { "id": 17, "name": "Science & Nature" },
+    { "id": 18, "name": "Science: Computers" },
+    { "id": 21, "name": "Sports" },
+    { "id": 23, "name": "History" }
+  ]
+}

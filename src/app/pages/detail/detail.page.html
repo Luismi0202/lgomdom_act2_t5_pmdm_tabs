@@ -1,0 +1,81 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/stats"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Resultado del Quiz</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div *ngIf="result; else noResult">
+    <!-- Resumen del resultado -->
+    <ion-card class="result-summary">
+      <ion-card-header>
+        <ion-card-subtitle>
+          <ion-chip [color]="getDifficultyColor()">
+            {{ result.difficulty | titlecase }}
+          </ion-chip>
+        </ion-card-subtitle>
+        <ion-card-title>{{ result.category }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="score-display">
+          <div class="score-circle" [class]="getScoreColor()">
+            <span class="score-number">{{ result.score }}%</span>
+          </div>
+          <div class="score-details">
+            <p><ion-icon name="checkmark-circle"></ion-icon> {{ result.correctAnswers }} correctas</p>
+            <p><ion-icon name="close-circle"></ion-icon> {{ result.totalQuestions - result.correctAnswers }} incorrectas</p>
+            <p><ion-icon name="time"></ion-icon> {{ formatDate(result.date) }}</p>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Lista de preguntas y respuestas -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="help-circle"></ion-icon> Preguntas y Respuestas
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let q of result.questions; let i = index" [class.correct]="q.isCorrect" [class.incorrect]="!q.isCorrect">
+            <ion-icon
+              slot="start"
+              [name]="q.isCorrect ? 'checkmark-circle' : 'close-circle'"
+              [color]="q.isCorrect ? 'success' : 'danger'">
+            </ion-icon>
+            <ion-label class="ion-text-wrap">
+              <h3>{{ i + 1 }}. {{ q.question }}</h3>
+              <p *ngIf="!q.isCorrect" class="user-answer">
+                Tu respuesta: <strong>{{ q.userAnswer || 'Sin respuesta' }}</strong>
+              </p>
+              <p class="correct-answer" [class.highlight]="!q.isCorrect">
+                Respuesta correcta: <strong>{{ q.correctAnswer }}</strong>
+              </p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button expand="block" (click)="goBack()" class="ion-margin-top">
+      <ion-icon slot="start" name="stats-chart"></ion-icon>
+      Volver a Estadísticas
+    </ion-button>
+  </div>
+
+  <ng-template #noResult>
+    <ion-card>
+      <ion-card-content class="ion-text-center">
+        <ion-icon name="help-circle" size="large" color="medium"></ion-icon>
+        <h2>Resultado no encontrado</h2>
+        <p>No se pudo cargar el detalle de este quiz.</p>
+        <ion-button (click)="goBack()">Volver</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+</ion-content>

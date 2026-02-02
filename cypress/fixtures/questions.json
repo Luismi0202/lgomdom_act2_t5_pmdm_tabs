@@ -1,0 +1,45 @@
+{
+  "response_code": 0,
+  "results": [
+    {
+      "type": "multiple",
+      "difficulty": "easy",
+      "category": "Science & Nature",
+      "question": "What is the chemical symbol for water?",
+      "correct_answer": "H2O",
+      "incorrect_answers": ["CO2", "NaCl", "O2"]
+    },
+    {
+      "type": "multiple",
+      "difficulty": "easy",
+      "category": "Science & Nature",
+      "question": "What planet is known as the Red Planet?",
+      "correct_answer": "Mars",
+      "incorrect_answers": ["Venus", "Jupiter", "Saturn"]
+    },
+    {
+      "type": "multiple",
+      "difficulty": "easy",
+      "category": "Science & Nature",
+      "question": "How many legs does a spider have?",
+      "correct_answer": "8",
+      "incorrect_answers": ["6", "4", "10"]
+    },
+    {
+      "type": "boolean",
+      "difficulty": "easy",
+      "category": "Science & Nature",
+      "question": "The Sun is a star.",
+      "correct_answer": "True",
+      "incorrect_answers": ["False"]
+    },
+    {
+      "type": "multiple",
+      "difficulty": "easy",
+      "category": "Science & Nature",
+      "question": "What gas do plants absorb from the atmosphere?",
+      "correct_answer": "Carbon Dioxide",
+      "incorrect_answers": ["Oxygen", "Nitrogen", "Hydrogen"]
+    }
+  ]
+}
