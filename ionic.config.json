@@ -1,0 +1,7 @@
+{
+  "name": "lgomdom-dam-tabs-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
